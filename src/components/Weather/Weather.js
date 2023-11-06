@@ -1,7 +1,7 @@
 import Days from "../Days/Days";
 import "./Weather.css";
 
-function Weather({city}) {
+function Weather({city, temp}) {
   return (
     <div className="row">
       <div className="col s12 m6 push-m3">
@@ -11,7 +11,7 @@ function Weather({city}) {
             <p>
               <img src="icons/sun.svg" />
             </p>
-            <span className="temperature">15°</span>
+            <span className="temperature">{temp}°</span>
             <div className="wind">Vent 1km/h (360°)</div>
           </div>
           <Days />

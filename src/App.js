@@ -1,59 +1,47 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import Header from './components/Header/Header';
-import Weather from './components/Weather/Weather';
+import { useEffect, useState } from "react";
+import "./App.css";
+import Header from "./components/Header/Header";
+import Weather from "./components/Weather/Weather";
 
 function App() {
+  const baseUri = process.env.REACT_APP_WEATHER_BASE_URI;
+  const apiKey = process.env.REACT_APP_API_KEY;
 
   const [city, setCity] = useState(["Lyon"]);
   const [data, setData] = useState([]);
-
-  const url = `http://api.weatherapi.com/v1/forecast.json?key=107f5288a33b4660b4e102805230611&q=${city}&days=3&aqi=no&alerts=no`;
+  const [temp, setTemp] = useState([]);
 
   useEffect(() => {
-    const fetchInfo = () => {
-      return fetch(url)
-              .then((res) => res.json())
-              .then((d) => {
-                setData(d)
-                setCity(d.location.name);
-              })
-    }
-    fetchInfo();
-  }, [])
+    const fetchWeatherData = () => {
+      fetch(
+        `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=5&aqi=no&alerts=no`
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          setData(data);
+          setCity(data.location.name);
+          setTemp(data.current.temp_c)
+        });
+    };
+    fetchWeatherData();
+  }, [city, temp]);
 
-
-  // useEffect(() => {
-  //   const fetchWeatherData = () => {
-  //     fetch(
-  //       ${apiUrl}?key=${apiKey}&q=${city}&days=5&aqi=no&alerts=no
-  //     )
-  //       .then((response) => {
-  //         return response.json();
-  //       })
-  //       .then((data) => {
-  //         setData(data);
-  //         setCity(data.location.name);
-  //       });
-  //   };
-  //   fetchWeatherData();
-  // }, [city]);
-
-
-  console.log(data.location.name);
+  // console.log(data.location.name);
 
   return (
-    <div id="root">
-      <div className="App">
-        <Header />
-        {typeof data.location.name != "undefined" ? (
-            <Weather city={city} />
-          ) : (
-            <div></div>
-          )}
-      </div>
+    <div className="App">
+      <Header />
+
+      {typeof data.location != "undefined" ? (
+        <Weather city={city} temp={temp} />
+      ) : (
+        <div></div>
+      )}
     </div>
-    );
+  );
 }
 
 export default App;
