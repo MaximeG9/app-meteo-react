@@ -1,7 +1,7 @@
 function Header() {
   return (
     <header className="App-header">
-      <img src="logo_transparent.png" class="App-logo" alt="logo" />
+      <img src="logo_transparent.png" className="App-logo" alt="logo" />
     </header>
   );
 }
